@@ -94,11 +94,31 @@ public class XMLConfigBuilder extends BaseBuilder {
     if (parsed) {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
     }
+    //  <?xml version="1.0" encoding="UTF-8" ?>
+    //  <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    //  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+    //  <configuration>
+    //    <environments default="development">
+    //      <environment id="development">
+    //        <transactionManager type="JDBC"/>
+    //        <dataSource type="POOLED">
+    //          <property name="driver" value="${driver}"/>
+    //          <property name="url" value="${url}"/>
+    //          <property name="username" value="${username}"/>
+    //          <property name="password" value="${password}"/>
+    //        </dataSource>
+    //      </environment>
+    //    </environments>
+    //    <mappers>
+    //      <mapper resource="org/mybatis/example/BlogMapper.xml"/>
+    //    </mappers>
+    //  </configuration>
     parsed = true;
     parseConfiguration(parser.evalNode("/configuration"));
     return configuration;
   }
 
+  // 解析配置
   private void parseConfiguration(XNode root) {
     try {
       //issue #117 read properties first
@@ -275,7 +295,9 @@ public class XMLConfigBuilder extends BaseBuilder {
       }
       for (XNode child : context.getChildren()) {
         String id = child.getStringAttribute("id");
+        // 只加载指定的环境配置
         if (isSpecifiedEnvironment(id)) {
+          // 由此可知标签 <environment>只含有transactionManager和dataSource
           TransactionFactory txFactory = transactionManagerElement(child.evalNode("transactionManager"));
           DataSourceFactory dsFactory = dataSourceElement(child.evalNode("dataSource"));
           DataSource dataSource = dsFactory.getDataSource();
@@ -307,8 +329,10 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
+  // 事务管理
   private TransactionFactory transactionManagerElement(XNode context) throws Exception {
     if (context != null) {
+      // 数据库连接类型
       String type = context.getStringAttribute("type");
       Properties props = context.getChildrenAsProperties();
       TransactionFactory factory = (TransactionFactory) resolveClass(type).newInstance();

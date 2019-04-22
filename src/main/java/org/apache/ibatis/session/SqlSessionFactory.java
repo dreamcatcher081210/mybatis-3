@@ -20,6 +20,8 @@ import java.sql.Connection;
 /**
  * Creates an {@link SqlSession} out of a connection or a DataSource
  *
+ * MyBatis 的应用都是以一个 SqlSessionFactory 的实例为核心的
+ *
  * @author Clinton Begin
  */
 public interface SqlSessionFactory {
