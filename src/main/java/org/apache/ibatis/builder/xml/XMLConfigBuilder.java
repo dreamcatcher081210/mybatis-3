@@ -122,7 +122,9 @@ public class XMLConfigBuilder extends BaseBuilder {
   // 解析配置
   private void parseConfiguration(XNode root) {
     try {
-      //issue #117 read properties first
+
+      // #解析子节点properties
+      // issue #117 read properties first
       // 这些属性都是可外部配置且可动态替换的，既可以在典型的 Java 属性文件中配置，亦可通过 properties 元素的子元素来传递
       propertiesElement(root.evalNode("properties"));
 
@@ -131,17 +133,29 @@ public class XMLConfigBuilder extends BaseBuilder {
       loadCustomVfs(settings);
       loadCustomLogImpl(settings);
 
+      // #解析子节点typeAliases 别名
       // 类型别名是为 Java 类型设置一个短的名字。 它只和 XML 配置有关，存在的意义仅在于用来减少类完全限定名的冗余。
       typeAliasesElement(root.evalNode("typeAliases"));
+      // #解析子节点plugins 插件
       pluginElement(root.evalNode("plugins"));
+      // #解析子节点objectFactory mybatis为结果创建对象时都会用到objectFactory
       objectFactoryElement(root.evalNode("objectFactory"));
+      // #解析子节点objectWrapperFactory
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
+      // 3.3.0之前不需要 有默认实现
+      /*
+        Reflector 这个类的用途主要是是通过反射获取目标类的 getter 方法及其返回值类型，setter 方法及其参数值类型等元信息。并将获取到的元信息缓存到相应的集合中，供后续使用
+       */
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
       settingsElement(settings);
+      // #解析environments 可以配置多个运行环境，但是每个SqlSessionFactory 实例只能选择一个运行环境
       // read it after objectFactory and objectWrapperFactory issue #631
       environmentsElement(root.evalNode("environments"));
+      // #解析databaseIdProvider MyBatis能够执行不同的语句取决于你提供的数据库供应商。许多数据库供应商的支持是基于databaseId映射
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
+      // #解析typeHandlers 当MyBatis设置参数到PreparedStatement 或者从ResultSet 结果集中取得值时，就会使用TypeHandler  来处理数据库类型与java 类型之间转换
       typeHandlerElement(root.evalNode("typeHandlers"));
+      // #解析mappers 主要的crud操作都是在mappers中定义的
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);

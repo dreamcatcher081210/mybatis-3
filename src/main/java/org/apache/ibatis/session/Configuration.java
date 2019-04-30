@@ -95,6 +95,7 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
+ * 用来存储对Mybatis的配置文件及mapper文件解析后的数据，Configuration对象会贯穿整个Mybatis的执行流程，为Mybatis的执行过程提供必要的配置信息
  * @author Clinton Begin
  */
 public class Configuration {
