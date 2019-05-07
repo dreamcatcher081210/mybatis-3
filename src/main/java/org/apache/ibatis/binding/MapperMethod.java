@@ -92,6 +92,8 @@ public class MapperMethod {
         }
         break;
       case FLUSH:
+        //当有处于事物中的时候
+        //sqlSession.flushStatements();起到一种预插入的作用(执行了这行代码之后,要插入的数据会锁定数据库的一行记录,并把数据库默认返回的主键赋值给插入的对象,这样就可以把该对象的主键赋值给其他需要的对象中去
         result = sqlSession.flushStatements();
         break;
       default:
