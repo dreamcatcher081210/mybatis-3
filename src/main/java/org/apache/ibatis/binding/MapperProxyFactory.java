@@ -24,6 +24,9 @@ import org.apache.ibatis.session.SqlSession;
 
 /**
  * @author Lasse Voss
+ * 映射器工厂
+ * 持有对应的dao接口Class
+ * 及方法缓存
  */
 public class MapperProxyFactory<T> {
 
