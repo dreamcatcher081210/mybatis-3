@@ -46,11 +46,15 @@ import org.apache.ibatis.session.SqlSession;
  */
 public class MapperMethod {
 
+  // sql命令
   private final SqlCommand command;
+  // 方法签名
   private final MethodSignature method;
 
   public MapperMethod(Class<?> mapperInterface, Method method, Configuration config) {
+    // 实例化SqlCommand 配置信息，接口，方法
     this.command = new SqlCommand(config, mapperInterface, method);
+    // 实例化方法签名 配置信息，接口，方法
     this.method = new MethodSignature(config, mapperInterface, method);
   }
 
@@ -220,12 +224,15 @@ public class MapperMethod {
 
   public static class SqlCommand {
 
+    // 方法名
     private final String name;
+
     private final SqlCommandType type;
 
     public SqlCommand(Configuration configuration, Class<?> mapperInterface, Method method) {
-      // cn.asae.oms.v2.invoice.dao.InvoiceDao.getNormalInvoiceOne 类似这样
+      // getNormalInvoiceOne 类似这样
       final String methodName = method.getName();
+      // InvoiceDao 方法所属的类
       final Class<?> declaringClass = method.getDeclaringClass();
       MappedStatement ms = resolveMappedStatement(mapperInterface, methodName, declaringClass,
           configuration);
@@ -254,8 +261,10 @@ public class MapperMethod {
       return type;
     }
 
+    // 解析映射语句
     private MappedStatement resolveMappedStatement(Class<?> mapperInterface, String methodName,
         Class<?> declaringClass, Configuration configuration) {
+      // InvoiceDao.getNormalInvoiceOne
       String statementId = mapperInterface.getName() + "." + methodName;
       if (configuration.hasStatement(statementId)) {
         return configuration.getMappedStatement(statementId);

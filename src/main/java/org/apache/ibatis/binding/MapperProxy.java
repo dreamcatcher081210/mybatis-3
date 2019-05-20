@@ -44,6 +44,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
   }
 
   // mybatis dao 执行处理核心入口
+  // Method类，主要用于在程序运行状态中，动态地获取方法信息， args 参数
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
