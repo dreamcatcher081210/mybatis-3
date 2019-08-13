@@ -90,6 +90,7 @@ public class XMLMapperBuilder extends BaseBuilder {
   }
 
   public void parse() {
+    // 判断是否加载过，防止重复加载
     if (!configuration.isResourceLoaded(resource)) {
       configurationElement(parser.evalNode("/mapper"));
       configuration.addLoadedResource(resource);
@@ -108,9 +109,22 @@ public class XMLMapperBuilder extends BaseBuilder {
   private void configurationElement(XNode context) {
     try {
       String namespace = context.getStringAttribute("namespace");
+      //命名空间不能为空 我要是开发人员我就用断言代替这段代码
       if (namespace == null || namespace.equals("")) {
         throw new BuilderException("Mapper's namespace cannot be empty");
       }
+      /*
+      SQL 映射文件只有很少的几个顶级元素（按照应被定义的顺序列出）：
+      cache – 对给定命名空间的缓存配置。
+      cache-ref – 对其他命名空间缓存配置的引用。
+      resultMap – 是最复杂也是最强大的元素，用来描述如何从数据库结果集中来加载对象。
+      parameterMap – 已被废弃！老式风格的参数映射。更好的办法是使用内联参数，此元素可能在将来被移除。文档中不会介绍此元素。
+      sql – 可被其他语句引用的可重用语句块。
+      insert – 映射插入语句
+      update – 映射更新语句
+      delete – 映射删除语句
+      select – 映射查询语句
+       */
       builderAssistant.setCurrentNamespace(namespace);
       cacheRefElement(context.evalNode("cache-ref"));
       cacheElement(context.evalNode("cache"));

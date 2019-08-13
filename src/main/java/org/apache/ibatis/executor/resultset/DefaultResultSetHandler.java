@@ -390,7 +390,8 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
   //
   // GET VALUE FROM ROW FOR SIMPLE RESULT MAP
-  //
+  /*
+  */
 
   private Object getRowValue(ResultSetWrapper rsw, ResultMap resultMap, String columnPrefix) throws SQLException {
     final ResultLoaderMap lazyLoader = new ResultLoaderMap();
