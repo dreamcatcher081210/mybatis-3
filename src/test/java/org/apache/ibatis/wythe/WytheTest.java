@@ -16,9 +16,11 @@ public class WytheTest {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            AuthorMapper authorMapper = sqlSession.getMapper(AuthorMapper.class);
+        }
 
-        AuthorMapper authorMapper = sqlSession.getMapper(AuthorMapper.class);
+
 
     }
 
