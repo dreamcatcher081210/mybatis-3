@@ -64,7 +64,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
   }
 
   private MapperMethod cachedMapperMethod(Method method) {
-    // 第一次肯定为空，之后由于缓存了，所以速度应该也会有所增加吧
+    // 第一次肯定为空，之后由于缓存了，所以速度应该会有所增加
     return methodCache.computeIfAbsent(method, k -> new MapperMethod(mapperInterface, method, sqlSession.getConfiguration()));
   }
 
