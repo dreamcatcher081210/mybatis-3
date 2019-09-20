@@ -94,6 +94,7 @@ public class XMLConfigBuilder extends BaseBuilder {
 
   // 解析配置
   public Configuration parse() {
+    // 只能解析一次
     if (parsed) {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
     }
@@ -116,6 +117,8 @@ public class XMLConfigBuilder extends BaseBuilder {
     //      <mapper resource="org/mybatis/example/BlogMapper.xml"/>
     //    </mappers>
     //  </configuration>
+
+    // 将解析标识置为true，防止二次解析
     parsed = true;
     parseConfiguration(parser.evalNode("/configuration"));
     return configuration;
